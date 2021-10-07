@@ -12,81 +12,71 @@ class Song
     self.class.all << self
   end
 
+
   def self.create
-    song = Song.new 
+    song = Song.new
     song.save
     song
   end
 
   def self.new_by_name(name)
     song = Song.new
-    song.name = name 
+    song.name = name
     song
   end
 
   def self.create_by_name(name)
-    song = Song.new 
-    song.name = name
-    song.save  
-    song
+    song = Song.new
+    song.name = name 
+    song.save
+    song   
   end
 
-  def self.find_by_name(name)
-    self.all.find {|song| song.name == name }
+  def self.find_by_name(search)
+    self.all.find {|object| object.name == search}
   end
 
-
-  def self.find_or_create_by_name(name)
-    self.find_by_name(name) || self.create_by_name(name)
- 
-    # if self.find_by_name(name)
-    #   self.find_by_name(name)
-    # else
-    #   self.create_by_name(name)
-    # 
-  
+  def self.find_or_create_by_name(search)
+    if self.find_by_name(search) == nil 
+      self.create_by_name(search)
+    else
+      self.find_by_name(search)
+    end
   end
-
 
   def self.alphabetical
-    # @@all.each.name.sort { |a, b| a.name <=> b.name} #spaceship compare the first and second name attribute
-    self.all.sort { |a, b| a.name <=> b.name }
-
-    ##@@all.sort_by {|song| song.name} <-----preferred
+    self.all.sort { |a,b| a.name <=> b.name}
   end
 
-  def self.new_from_filename(filename)
-    # filename = filename.split("-")
-    # artistName = filename[0].strip
-    # title = filename[1].strip
-    # titleClean = title.split(".")
-
-    artistName = filename.split("-")[0].strip
-    titleClean = filename.split("-")[1].strip.split(".")
+  def self.new_from_filename(file_name)
+    trim = file_name.split("-")
+    artist_name = trim[0].strip
+    trim_nomp3 = trim[1].split(".")
+    name =  trim_nomp3[0].strip 
 
     song = Song.new
-
-    song.name = titleClean[0]
-    song.artist_name = artistName 
+    song.name = name
+    song.artist_name = artist_name
     song
+
   end
 
-
-  def self.create_from_filename(filename)
-
-    artistName = filename.split("-")[0].strip
-    titleClean = filename.split("-")[1].strip.split(".")
+  def self.create_from_filename(file_name)
+    trim = file_name.split("-")
+    artist_name = trim[0].strip
+    trim_nomp3 = trim[1].split(".")
+    name =  trim_nomp3[0].strip 
 
     song = Song.new
-
-    song.name = titleClean[0]
-    song.artist_name = artistName 
+    song.name = name
+    song.artist_name = artist_name
     song.save 
     song
   end
 
-
   def self.destroy_all
-    self.all.clear
+    self.all.clear 
   end
+
+
 end
